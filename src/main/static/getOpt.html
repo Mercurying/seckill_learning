@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 注意这里引入出现问题 当type放置在src后面无法找到jQuery元素引用 -->
+    <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
+
+</head>
+
+<body>
+    <h3>获取otp信息</h3>
+    <div>
+        <label>用户手机号码</label>
+        <div>
+            <input type="text" placeholder="手机号码" name="telphone" id="telphone">
+        </div>
+        <div class="mb10">
+            <button id="getOtp" type="submit">
+                获取otp短信
+            </button>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        //  校验手机号码
+        var telphone = $("#telphone").val()
+        if (telphone == "" || telphone == null) alert("手机号码不能为空,请输入有效的手机号码!")
+            // 绑定点击事件
+        $('#getOtp').on("click", function() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                url: "http://127.0.0.1:8090/user/getOtp",
+                data: {
+                    "telphone": $("#telphone").val()
+                },
+                success: function(data) {
+                    if (data.status == "success") {
+                        alert("otp短信发送成功,请注意查看手机短信");
+                    } else {
+                        alert("发送otp短信失败,失败原因:" + data.data.errorMsg);
+                    }
+                },
+                error: function(data) {
+                    alert("发送otp短信失败,失败原因:" + data.responseText);
+                }
+            })
+        })
+    })
+</script>
+<style>
+    .mb10 {
+        margin-top: 10px;
+    }
+</style>
+
+</html>
