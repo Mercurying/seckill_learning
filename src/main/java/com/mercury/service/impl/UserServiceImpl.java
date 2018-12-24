@@ -8,6 +8,8 @@ import com.mercury.error.BusinessException;
 import com.mercury.error.EnumBusinessError;
 import com.mercury.service.UserService;
 import com.mercury.service.model.UserModel;
+import com.mercury.validator.ValidationResult;
+import com.mercury.validator.ValidatorImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
     private UserDOMapper userDOMapper;
     @Autowired
     private UserPasswordDOMapper userPasswordDOMapper;
+    @Autowired
+    private ValidatorImpl validator;
+
 
     @Override
     public UserModel getUserById(Integer id) {
@@ -30,19 +35,26 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    // 保证是事务性操作
+    // 保证是事务性操作  优化校验规则
     @Transactional
     @Override
     public void register(UserModel userModel) throws BusinessException {
         if (userModel == null) {
             throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if (StringUtils.isEmpty(userModel.getName())
-                || userModel.getAge() == null
-                || userModel.getGender() == null
-                || StringUtils.isEmpty(userModel.getTelphone())) {
-            throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
+//        if (StringUtils.isEmpty(userModel.getName())
+//                || userModel.getAge() == null
+//                || userModel.getGender() == null
+//                || StringUtils.isEmpty(userModel.getTelphone())) {
+//            throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
+//        }
+        // 使用自定义的验证规则进行验证前端传递的必要参数是否合法 使用注解在对应model上进行注释
+        ValidationResult result = validator.validate(userModel);
+        if (result.getHasErrors()) {
+            throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR, result.getErrorMsg());
         }
+
+
         // 添加用户基本信息
         UserDO userDO = convertFromUserModel(userModel);
         try {

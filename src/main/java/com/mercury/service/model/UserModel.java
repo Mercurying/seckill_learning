@@ -1,16 +1,29 @@
 package com.mercury.service.model;
 
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /*user 完整的领域模型对象*/
 public class UserModel {
 
     private Integer id;
+    // 注意NotBlank[包含了null与"" ]与NotNull[不能为null值]之间的区别
+    @NotBlank(message = "姓名不能为空")
     private String name;
+    @NotNull(message = "性别为必填字段")
     private Byte gender;
+    @NotNull(message = "年龄不能不填写")
+    @Min(value = 0, message = "年龄不能小于0岁")
+    @Max(value = 200, message = "年龄不能超过200岁")
     private Integer age;
+    @NotBlank(message = "手机号码不能为空")
     private String telphone;
     private String registerMode;
     private String thirdPartyId;
+    @NotBlank(message = "密码不能为空")
     private String encryptedPassword;
 
     public Integer getId() {
