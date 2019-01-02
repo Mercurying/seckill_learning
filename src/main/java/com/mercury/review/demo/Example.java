@@ -1,4 +1,4 @@
-package com.mercury.demo;
+package com.mercury.review.demo;
 
 public class Example {
     public static void main(String[] args) {

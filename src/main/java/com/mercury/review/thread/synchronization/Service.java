@@ -6,10 +6,10 @@ public class Service {
         synchronized (obj) {
             try {
 
-                System.out.println("testMethod1 __getLock time=" + System.currentTimeMillis() + "  run threadName" +
+                System.out.println("testMethod1 __getLock time=" + System.currentTimeMillis() + "  run threadName=" +
                         Thread.currentThread().getName());
                 Thread.sleep(2000);
-                System.out.println("testMethod1 releaseLock time=" + System.currentTimeMillis() + "  run threadName" +
+                System.out.println("testMethod1 releaseLock time=" + System.currentTimeMillis() + "  run threadName=" +
                         Thread.currentThread().getName());
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -19,6 +19,7 @@ public class SynchronizedObjThread extends Thread {
         MyObject obj = new MyObject();
         Service service = new Service();
         SynchronizedObjThread thread = new SynchronizedObjThread(obj, service);
+        thread.setName("a");
         thread.start();
 
 
