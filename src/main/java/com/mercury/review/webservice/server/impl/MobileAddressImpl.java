@@ -11,6 +11,7 @@ import javax.jws.WebService;
 public class MobileAddressImpl implements MobileAddress {
     @Override
     public String getMobileAddress(String mobileNO) {
+        System.out.println("receive parameters:" + mobileNO);
         if (StringUtils.isNotBlank(mobileNO)) {
             if (Mobile.MOBILE_NO.equals(mobileNO)) {
                 return "手机号:" + mobileNO + ",归属地是:" + "上海移动全球通卡";
