@@ -5,12 +5,13 @@ import com.mercury.review.webservice.common.ServerResponse;
 import com.mercury.review.webservice.server.MobileAddress;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService
 public class MobileAddressImpl implements MobileAddress {
     @Override
-    public String getMobileAddress(String mobileNO) {
+    public String getMobileAddress(@WebParam(name = "mobileNO") String mobileNO) {
         System.out.println("receive parameters:" + mobileNO);
         if (StringUtils.isNotBlank(mobileNO)) {
             if (Mobile.MOBILE_NO.equals(mobileNO)) {

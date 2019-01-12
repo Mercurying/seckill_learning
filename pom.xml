@@ -130,7 +130,7 @@
                             <!--允许移动生成文件-->
                             <verbose>true</verbose>
                             <!--允许自动覆盖文件-->
-                            <overwrite>true</overwrite>
+                            <overwrite>false</overwrite>
                         <!--指定mybatis自动生成配置文件的路径-->
                         <configurationFile>
                             src/main/resources/mybatis-generator.xml
