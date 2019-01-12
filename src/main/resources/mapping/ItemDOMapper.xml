@@ -152,4 +152,10 @@
       sales = #{sales,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <update id="increaseSales">
+    update item
+    set sales = sales + #{amount}
+    where id = #{itemId}
+  </update>
 </mapper>

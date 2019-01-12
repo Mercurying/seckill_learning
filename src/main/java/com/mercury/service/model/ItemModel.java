@@ -28,6 +28,10 @@ public class ItemModel {
     // 商品销售量
     private Integer sales;
 
+    // 添加秒杀活动信息
+    private PromoModel promoModel;
+
+
     public Integer getId() {
         return id;
     }
@@ -84,6 +88,14 @@ public class ItemModel {
         this.sales = sales;
     }
 
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
+
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
+    }
+
     @Override
     public String toString() {
         return "ItemModel{" +
@@ -94,6 +106,7 @@ public class ItemModel {
                 ", description='" + description + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", sales=" + sales +
+                ", promoModel=" + promoModel +
                 '}';
     }
 }

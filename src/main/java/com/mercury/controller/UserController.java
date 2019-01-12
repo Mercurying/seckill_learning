@@ -161,5 +161,17 @@ public class UserController extends BaseController {
         return newStr;
     }
 
+    public static void main(String[] args) {
+        UserController userController = new UserController();
+        try {
+            String encryptedPwd = userController.encodeByMd5("mukewang123456");
+            System.out.println("encryptedPwd:" + encryptedPwd);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

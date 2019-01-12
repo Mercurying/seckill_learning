@@ -19,4 +19,10 @@ public interface ItemService {
 
     ItemStockDO getItemStockById(Integer id);
 
+    // 库存扣除
+    boolean decreaseStock(Integer itemId, Integer amount);
+
+    // 增销量
+    boolean increaseSales(Integer itemId, Integer amount);
+
 }

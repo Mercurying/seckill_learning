@@ -1,6 +1,7 @@
 package com.mercury.dao;
 
 import com.mercury.dataobject.ItemDO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -55,4 +56,6 @@ public interface ItemDOMapper {
      * @mbggenerated Fri Jan 11 21:16:38 CST 2019
      */
     int updateByPrimaryKey(ItemDO record);
+
+    int increaseSales(@Param(value = "itemId") Integer itemId, @Param(value = "amount") Integer amount);
 }

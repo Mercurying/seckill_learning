@@ -9,6 +9,7 @@ import com.mercury.response.CommonReturnType;
 import com.mercury.service.ItemService;
 import com.mercury.service.model.ItemModel;
 import com.mercury.service.model.UserModel;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("item/")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = {"*"})
-public class ItemController {
+public class ItemController extends BaseController {
 
     @Autowired
     private ItemService itemService;
@@ -42,9 +43,7 @@ public class ItemController {
         // 添加用户是否登录状态判断 若未登录则提示无权限操作
         UserModel user = (UserModel) this.httpServletRequest.getSession().getAttribute(BaseController.CURRENT_USER);
         if (user == null) {
-            // 如果此处再次抛出异常导致程序出错
-            // throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR, "用户未登录,请登录后查看信息");
-            return CommonReturnType.create("用户未登录,请登录后进行操作", "fail");
+            throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR, "用户未登录,请登录后进行操作");
         }
         System.out.println("当前登录系统用户是:");
         System.out.println(user);
@@ -68,7 +67,7 @@ public class ItemController {
 
         UserModel user = (UserModel) this.httpServletRequest.getSession().getAttribute(BaseController.CURRENT_USER);
         if (user == null) {
-            return CommonReturnType.create("用户未登录,请登录后进行操作", "fail");
+            throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR, "用户未登录,请登录后进行操作");
         }
         if (id == null) {
             throw new BusinessException(EnumBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -112,6 +111,17 @@ public class ItemController {
         }
         ItemVO itemVO = new ItemVO();
         BeanUtils.copyProperties(itemModel, itemVO);
+        if (itemModel.getPromoModel() != null) {
+            // 存在秒杀活动 --未开始 正在进行中
+            itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
+            itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
+            itemVO.setPromoStartDate(itemModel.getPromoModel().getStartDate().toString(DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")));
+            itemVO.setPromoId(itemModel.getPromoModel().getId());
+        } else {
+            // 没有秒杀活动
+            itemVO.setPromoStatus(0);
+        }
+
         return itemVO;
     }
 

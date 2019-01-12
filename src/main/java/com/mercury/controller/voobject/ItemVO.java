@@ -17,6 +17,14 @@ public class ItemVO {
     private String imgUrl;
     // 商品销售量
     private Integer sales;
+    // 秒杀活动状态 0:没有秒杀活动 1:秒杀活动未开始 2:秒杀活动正在进行中
+    private Integer promoStatus;
+    // 秒杀活动价格
+    private BigDecimal promoPrice;
+    // 秒杀活动开始时间 --用于倒计时
+    private String PromoStartDate;
+    // 秒杀活动id
+    private Integer promoId;
 
     public Integer getId() {
         return id;
@@ -72,5 +80,37 @@ public class ItemVO {
 
     public void setSales(Integer sales) {
         this.sales = sales;
+    }
+
+    public Integer getPromoStatus() {
+        return promoStatus;
+    }
+
+    public void setPromoStatus(Integer promoStatus) {
+        this.promoStatus = promoStatus;
+    }
+
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
+
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
+
+    public String getPromoStartDate() {
+        return PromoStartDate;
+    }
+
+    public void setPromoStartDate(String promoStartDate) {
+        this.PromoStartDate = promoStartDate;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
     }
 }

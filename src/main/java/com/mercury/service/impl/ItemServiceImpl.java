@@ -7,7 +7,9 @@ import com.mercury.dataobject.ItemStockDO;
 import com.mercury.error.BusinessException;
 import com.mercury.error.EnumBusinessError;
 import com.mercury.service.ItemService;
+import com.mercury.service.PromoService;
 import com.mercury.service.model.ItemModel;
+import com.mercury.service.model.PromoModel;
 import com.mercury.validator.ValidationResult;
 import com.mercury.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +29,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemDOMapper itemDOMapper;
     @Autowired
     private ItemStockDOMapper itemStockDOMapper;
+    @Autowired
+    private PromoService promoService;
 
     // 确保事务操作
     @Transactional
@@ -74,8 +78,16 @@ public class ItemServiceImpl implements ItemService {
         }
         // 根据itemId查找库存信息
         // 之前这里一直返回null值由于mapper中语句出错导致 自动的生成的id 变成了" id"
+        // 获取商品库存信息
         ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
-        return this.convertModelFromDataObject(itemDO, itemStockDO);
+        ItemModel itemModel = this.convertModelFromDataObject(itemDO, itemStockDO);
+        // 判断商品是否存在秒杀活动信息
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if (promoModel != null && promoModel.getStatus().intValue() != 3) {
+            // 存在未结束的秒杀活动
+            itemModel.setPromoModel(promoModel);
+        }
+        return itemModel;
     }
 
     @Override
@@ -83,6 +95,23 @@ public class ItemServiceImpl implements ItemService {
         // 测试xml文件对应的接口是否正常
         ItemStockDO itemStockDO = itemStockDOMapper.selectByPrimaryKey(id);
         return itemStockDO;
+    }
+
+    @Transactional
+    @Override
+    public boolean decreaseStock(Integer itemId, Integer amount) {
+        // 如果影响行数大于0则表明 更新成功.
+        int rowResult = itemStockDOMapper.decreaseStock(itemId, amount);
+        return rowResult > 0;
+    }
+
+
+    @Transactional
+    @Override
+    public boolean increaseSales(Integer itemId, Integer amount) {
+        // 更新商品对应的销量信息
+        int rowResult = itemDOMapper.increaseSales(itemId, amount);
+        return rowResult > 0;
     }
 
 
