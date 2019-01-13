@@ -22,5 +22,6 @@ public class Example {
         System.out.println(b == c);
         System.out.println(c == d);
         System.out.println(d == a);
+        System.out.println(c.equals(d));
     }
 }
