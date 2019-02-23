@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
@@ -88,6 +89,31 @@ public class UserServiceImpl implements UserService {
         }
         UserModel userModel = assembleUserModel(userDO, userPasswordDO);
         return userModel;
+    }
+
+    /**
+     * 三条执行sql的语句第一条执行成功中间那一条执行失败
+     * 第三条是不会进行执行的
+     */
+    // rollbackFor = IllegalArgumentException.class
+    // 前几次之所以没有生效是由于数据表存储引擎设置的是innoDB导致的 innoDB不支持事务
+    @Transactional
+    @Override
+    public void testWithOutTransactionCondition(UserDO userDO, String password) {
+        //
+        userDOMapper.insertSelective(userDO);
+      //  throw new IllegalArgumentException("参数不合法");
+        insertWithException(userDO, password);
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void insertWithException(UserDO userDO, String password) {
+        UserPasswordDO userPasswordDO = new UserPasswordDO();
+        userPasswordDO.setUserId(5);
+        userPasswordDO.setEncryptedPassword(password);
+        userPasswordDOMapper.insertSelective(userPasswordDO);
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.mercury.controller;
 
 import com.mercury.controller.voobject.UserVO;
+import com.mercury.dataobject.UserDO;
 import com.mercury.error.BusinessException;
 import com.mercury.error.EnumBusinessError;
 import com.mercury.response.CommonReturnType;
@@ -24,7 +25,7 @@ import java.util.Random;
 // 该设置针对ajax跨域请求
 /*使用CrossOrigin进行跨域请求设置放行 需添加 allowCredentials  allowedHeaders 设置*/
 @Controller
-@RequestMapping("user/")
+@RequestMapping("/user")
 @CrossOrigin(allowCredentials = "true", allowedHeaders = {"*"})
 public class UserController extends BaseController {
     @Autowired
@@ -141,6 +142,20 @@ public class UserController extends BaseController {
         resultMap.put("age", age);
         resultMap.put("gender", gender);
         return CommonReturnType.create(resultMap);
+    }
+
+    @RequestMapping(value = "withoutTransaction", method = {RequestMethod.POST}, consumes = {BaseController.CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public void testWithoutTransactionOperation(@RequestParam(value = "name") String name,
+                                                @RequestParam(value = "age") Integer age,
+                                                @RequestParam(value = "telephone") String telephone,
+                                                @RequestParam(value = "password") String password) {
+        UserDO userDO = new UserDO();
+        userDO.setName(name);
+        userDO.setAge(age);
+        userDO.setTelphone(telephone);
+
+        userService.testWithOutTransactionCondition(userDO,password);
     }
 
     /*组装返回前端所需的数据*/
