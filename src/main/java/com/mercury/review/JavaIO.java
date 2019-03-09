@@ -18,6 +18,7 @@ public class JavaIO {
     private static final Character a = 'B';
 
     public static void main(String[] args) {
-
+        System.out.printf("0.1*3=0.3 是否正确:%s", (0.1 * 3 == 0.3));
     }
+
 }

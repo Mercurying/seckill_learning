@@ -12,6 +12,21 @@ import java.util.stream.Collectors;
 
 /**
  * 测试 java 8 lambda表达式以及stream()流式API
+ * 常见方法有
+ * toList
+ * toSet
+ * toMap
+ * toCollection
+ * forEach
+ * map
+ * reduce
+ * filter
+ * 聚合函数
+ * count
+ * averagingInt
+ * max
+ * min
+ * groupingBy
  *
  * @author mercury
  * @date 2019/2/22 17:49
